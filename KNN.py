@@ -5,7 +5,6 @@
 from collections import Counter
 import math 
 import numpy as np
-from random import *
 from sklearn import cross_validation
 
 def euclidean(v1,v2): 
