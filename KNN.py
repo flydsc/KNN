@@ -85,8 +85,6 @@ def KNN(k,train,test):
         for i in range(k):
             temp.append(dict[i][1])
         label = Counter(temp).most_common(1)[0][0]
-        #print label
-        #print(str(label)+'\t' + str(t[-1]))
         if label == t[-1]:
             error.append(0)
         else:
