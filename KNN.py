@@ -6,6 +6,9 @@ from collections import Counter
 import math 
 import numpy as np
 from sklearn import cross_validation
+import matplotlib as mpl
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
 
 def euclidean(v1,v2): 
     d=0.0
@@ -90,23 +93,65 @@ def KNN(k,train,test):
             error.append(1)
     return error  
 
-if __name__ == '__main__':
-    k = 10
+def processknn(k,S):
     url = 'bezdekIris.data'
     data = np.genfromtxt(open(url,'r'), delimiter=',',dtype=None)
-    cv = cross_validation.KFold(len(data), n_folds=13, indices=True)
+    cv = cross_validation.KFold(len(data), n_folds= S, indices=True)
     results = []
     for traincv, testcv in cv:
         train =[]
         test = []
-        print len(cv)
-        print len(traincv)
-        print len(testcv)
         for i in range(len(traincv)):
             train.append(data[traincv[i]])
         for i in range(len(testcv)):
             test.append(data[testcv[i]])
         error = KNN(k,train,test)
         results.append(sum(error))
-    print len(error)
+    '''
+    print "The S is " + str(S) + "\tThe k is " + str(k) +":"
     print results
+    print "The averrage is "+ str(sum(results)/len(results))
+    
+    '''
+    return min(results)
+
+def drawplot(X,Y,Z):
+    print X
+    print Y
+    print Z
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    ax.plot(X,Y,Z, label='Minimal error curve')
+    ax.set_xlabel("S from S-fold")
+    ax.set_ylabel("k from k-NN")
+    ax.set_zlabel("Minimal error")
+    ax.legend()
+    ax.legend()
+    plt.show()
+
+if __name__ == '__main__':
+    K = range(1,40,2)
+    S = [2,5,10]
+    mini = []
+    x = []
+    y = []
+    for s in S:
+        for k in K:
+            x.append(s)
+            y.append(k)
+            mini.append(int(processknn(k,s)))
+    #
+    indexrange = range(0,61,20)
+    error = []
+    minik = [] 
+    for i in range(len(S)):
+        error.append(mini[indexrange[i]:indexrange[i+1]])
+        error[i] = list(reversed(error[i]))
+        minik.append(error[i].index(min(error[i])))
+        print min(error[i])
+    for i in minik:
+        print K[len(K)-i-1]
+    drawplot(x,y,mini)
+
+        
+    

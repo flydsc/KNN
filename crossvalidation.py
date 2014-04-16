@@ -32,6 +32,7 @@ def kfold(lenth,n_fold):
     
 
 if __name__ == '__main__':
+    k = 13
     cv = kfold(150,13)
-    print len(cv[0][0])
-    print len(cv[1][0])
+    #print cv[0][0]
+    print len(cv[0][k])#0is train
